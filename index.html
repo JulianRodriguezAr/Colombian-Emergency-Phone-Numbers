@@ -3,12 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleccionar Número de Teléfono</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contacto Telefónico</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .phone-number {
+            font-size: 1.5em;
+            color: #4CAF50;
+            text-decoration: none;
+            display: block;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .phone-number:hover {
+            background-color: #dcedc8;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 20px;
+            padding: 10px 0;
+            background-color: #f1f1f1;
+        }
+
+    </style>
 </head>
 <body>
-    <h2>Selecciona un número para llamar</h2>
-    <p><a href="tel:123">Llamar a Policia Nacional</a></p>
-    <p><a href="tel:112">Llamar a Gaula</a></p>
-    <p><a href="tel:+14435556677">Llamar al +1 443 555 6677</a></p>
+    <header>
+        <h1>Contacta con Nosotros</h1>
+    </header>
+
+    <div class="container">
+        <h2>Selecciona un número para llamar:</h2>
+        <a href="tel:+1234567890" class="phone-number">+1 234 567 890</a>
+        <a href="tel:+1987654321" class="phone-number">+1 987 654 321</a>
+        <a href="tel:+1123456789" class="phone-number">+1 123 456 789</a>
+        <a href="tel:+1444555666" class="phone-number">+1 444 555 666</a>
+        <a href="tel:+1555666777" class="phone-number">+1 555 666 777</a>
+    </div>
+
+    <footer>
+        <p>© 2025 Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>
