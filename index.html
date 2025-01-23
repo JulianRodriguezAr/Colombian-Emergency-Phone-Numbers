@@ -9,6 +9,12 @@
     <title>Lineas de Emergencia</title>
     <style>
         /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f7f7f7;
@@ -24,89 +30,40 @@
             text-align: center;
             padding: 20px 0;
             position: relative;
-            /* Para posicionar elementos dentro del header */
             display: flex;
             flex-direction: column;
-            /* Cambiar la dirección del flex para colocar todo en columna */
             justify-content: center;
-            /* Asegura que todo el contenido esté centrado */
             align-items: center;
-            /* Centra las imágenes y el texto horizontalmente */
             padding-left: 20px;
             padding-right: 20px;
-
         }
 
         /* Ajustes para las imágenes */
         .header-image {
             max-width: 125px;
-            /* Tamaño controlado de las imágenes */
             height: auto;
-            /* Mantener la proporción de la imagen */
-            margin-top: -35px;
-            /* Separación entre el texto y la imagen */
-            margin-bottom: -45px;
+            margin-top: auto;
+            margin-bottom: -30px;
         }
 
-        /* Si necesitas más espacio entre las imágenes y el texto */
+        /* Título del encabezado */
         header h1 {
             flex: 1;
-            /* Esto asegura que el h1 ocupe todo el espacio central disponible */
-            margin: 0;
-            /* Elimina el margen del título */
-        }
-
-        /* Media query para pantallas pequeñas */
-        @media (max-width: 600px) {
-            .header-image {
-                max-width: 80px;
-                /* Ajusta las imágenes en pantallas más pequeñas */
-            }
-
-            header h1 {
-                font-size: 1.5em;
-                /* Ajusta el tamaño del texto en pantallas pequeñas */
-            }
-        }
-
-        /* boton */
-
-        /* Estilo del botón flotante */
-        .floating-btn {
-            position: fixed; /* Mantiene el botón fijo en la pantalla */
-            bottom: 20px; /* Se coloca 20px por encima del borde inferior de la pantalla */
-            right: 20px; /* Se coloca 20px desde el borde derecho de la pantalla */
-            background-color: #4CAF50; /* Fondo verde */
-            color: white; /* Texto blanco */
-            padding: 15px 25px; /* Espaciado alrededor del texto */
-            border-radius: 50px; /* Bordes redondeados */
-            font-size: 14px; /* Tamaño del texto */
-            text-align: center; /* Centrado del texto */
-            text-decoration: none; /* Elimina el subrayado del enlace */
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Sombra sutil */
-            transition: all 0.3s ease; /* Transición suave al pasar el cursor sobre el botón */
-        }
-
-        .floating-btn:hover {
-            background-color: #45a049; /* Cambio de color en el hover */
-            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3); /* Aumenta la sombra en el hover */
-        }
-
-        /* fin boton*/
-
-        h1 {
             margin: 0;
             font-size: 2em;
         }
 
+        /* Estilo para los números de contacto */
         .container {
-            max-width: 750px;
-            height: auto;
+            max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Dos columnas fijas */
+            gap: 20px;
         }
 
         .phone-number {
@@ -126,6 +83,28 @@
             background-color: #dcedc8;
         }
 
+        /* Estilo del botón flotante */
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 14px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            background-color: #45a049;
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Estilos del pie de página */
         footer {
             text-align: center;
             font-size: 0.9em;
@@ -134,50 +113,99 @@
             padding: 10px 0;
             background-color: #f1f1f1;
         }
+
+        /* Media queries para pantallas pequeñas */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .header-image {
+                max-width: 100px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+
+            .phone-number {
+                font-size: 1.2em;
+            }
+
+            .floating-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 12px 20px;
+            }
+        }
+
+        /* Media queries para pantallas aún más pequeñas */
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.6em;
+            }
+
+            .header-image {
+                max-width: 80px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                padding: 5px;
+            }
+
+            .phone-number {
+                font-size: 1em;
+            }
+
+            .floating-btn {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 15px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <header>
         <h1>Servicios de Emergencia Colombianos</h1>
-        <img class="header-image" style="left: -100px;" src="./quetzal.png" alt="Logo derecho">
+        <img class="header-image" src="./quetzal.png" alt="Logo derecho">
     </header>
 
     <div class="container">
-        <h2>Selecciona el servicio de emergencia a llamar:</h2>
-        <div style="max-width: 375px; padding: 5px;">
-            <a href="tel:119" class="phone-number">Bomberos</a>
-            <a href="tel:3813000" class="phone-number">IDIGER</a>
-            <a href="tel:132" class="phone-number">Cruz Roja</a>
-            <a href="tel:144" class="phone-number">Defensa Civil:</a>
-            <a href="tel:123 - 2483511 - 2483512" class="phone-number">Policía Nacional</a>
-            <a href="tel:5159000" class="phone-number">Policía Ambiental y Ecológica</a>
-            <a href="tel:018000112137" class="phone-number">Policía de Tránsito y Transporte</a>
-            <a href="tel:157" class="phone-number">DIJIN</a>
-            <a href="tel:165" class="phone-number">GAULA</a>
-        </div>
+        <!-- Título del listado -->
+        <h2 style="grid-column: span 2; text-align: center; color: #333; margin-bottom: 20px;">
+            Contactos de Emergencia
+        </h2>
 
-        <div style="margin-left: 400px; margin-top: -583px;">
-            <a href="tel:115" class="phone-number">Alumbrado eléctrico - Codensa</a>
-            <a href="tel:164" class="phone-number">Gas natural</a>
-            <a href="tel:116" class="phone-number">Acueducto</a>
-            <a href="tel:018000112137" class="phone-number">Linea Púrpura</a>
-            <a href="tel:123" class="phone-number">Secretaría de salud - ambulancia:</a>
-            <a href="tel:#265" class="phone-number">Allianz</a>
-            <a href="tel:4055911" class="phone-number">Sura</a>
-            <a href="tel:01800 954 5724" class="phone-number">EAP Latina</a>
-            <a href="tel:018000112137" class="phone-number">Fiscalia General de la Nación</a>
-        </div>
+        <!-- Listado de números de emergencia -->
+        <a href="tel:119" class="phone-number">Bomberos</a>
+        <a href="tel:3813000" class="phone-number">IDIGER</a>
+        <a href="tel:132" class="phone-number">Cruz Roja</a>
+        <a href="tel:144" class="phone-number">Defensa Civil:</a>
+        <a href="tel:123 - 2483511 - 2483512" class="phone-number">Policía Nacional</a>
+        <a href="tel:5159000" class="phone-number">Policía Ambiental y Ecológica</a>
+        <a href="tel:018000112137" class="phone-number">Policía de Tránsito y Transporte</a>
+        <a href="tel:157" class="phone-number">DIJIN</a>
+        <a href="tel:165" class="phone-number">GAULA</a>
 
-        <!-- Botón para descargar el archivo .vcf -->
-        <a href="contactos_emergencia.vcf" class="floating-btn" download="contactos_emergencia.vcf">
-            <button
-                style="padding: 10px 20px; font-size: 1.2em; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                Guardar Contactos de Emergencia
-            </button>
-        </a>
-
+        <a href="tel:115" class="phone-number">Alumbrado eléctrico - Codensa</a>
+        <a href="tel:164" class="phone-number">Gas natural</a>
+        <a href="tel:116" class="phone-number">Acueducto</a>
+        <a href="tel:018000112137" class="phone-number">Linea Púrpura</a>
+        <a href="tel:123" class="phone-number">Secretaría de salud - ambulancia:</a>
+        <a href="tel:#265" class="phone-number">Allianz</a>
+        <a href="tel:4055911" class="phone-number">Sura</a>
+        <a href="tel:01800 954 5724" class="phone-number">EAP Latina</a>
+        <a href="tel:018000112137" class="phone-number">Fiscalia General de la Nación</a>
     </div>
+
+    <!-- Botón para descargar el archivo .vcf -->
+    <a href="contactos_emergencia.vcf" class="floating-btn" download="contactos_emergencia.vcf">
+        Guardar Contactos de Emergencia
+    </a>
 
     <footer>
         <p>Quetzal International Services SAS © 2025 Todos los derechos reservados.</p>
