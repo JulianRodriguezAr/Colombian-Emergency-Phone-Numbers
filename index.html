@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,25 +17,52 @@
             color: #333;
         }
 
+        /* Estilos generales para el encabezado */
         header {
             background-color: #4CAF50;
-            top: 0px;
-            display:block ;
             color: white;
             text-align: center;
-            padding: 20px 0;
-            background-image: url('./alil.png');
-            background-size: 115px 110px;
-            background-position-x: 19%;
-            background-position-y: 18%;
-            background-repeat: no-repeat;
+            padding: 1px 0;
+            position: relative;
+            /* Para posicionar elementos dentro del header */
+            display: flex;
+            justify-content: space-between;
+            /* Distribuye los elementos entre izquierda y derecha */
+            align-items: center;
+            /* Centra verticalmente las imágenes */
+            padding-left: 130px;
+            /* Espaciado a la izquierda */
+            padding-right: 130px;
+            /* Espaciado a la derecha */
         }
 
-        .header-image{
-            position: absolute;
-            top: -60px; /* A -60px desde la parte superior */
-            right: 180px; /* A 100px desde el borde izquierdo */
-            width: 200px; /* Ajusta el tamaño de la imagen */
+        /* Ajustes para las imágenes */
+        .header-image {
+            max-width: 100px;
+            /* Tamaño controlado de las imágenes */
+            height: auto;
+            /* Mantener la proporción de la imagen */
+        }
+
+        /* Si necesitas más espacio entre las imágenes y el texto */
+        header h1 {
+            flex: 1;
+            /* Esto asegura que el h1 ocupe todo el espacio central disponible */
+            margin: 0;
+            /* Elimina el margen del título */
+        }
+
+        /* Media query para pantallas pequeñas */
+        @media (max-width: 600px) {
+            .header-image {
+                max-width: 80px;
+                /* Ajusta las imágenes en pantallas más pequeñas */
+            }
+
+            header h1 {
+                font-size: 1.5em;
+                /* Ajusta el tamaño del texto en pantallas pequeñas */
+            }
         }
 
         h1 {
@@ -77,17 +105,16 @@
             padding: 10px 0;
             background-color: #f1f1f1;
         }
-
     </style>
 </head>
+
 <body>
     <header>
+        <img class="header-image" src="./alil.png" alt="Logo izquierdo">
         <h1>Servicios de Emergencia Colombianos</h1>
-        <div>
-            <img class="header-image" src="./quetzal.png">
-        </div>
+        <img class="header-image" src="./quetzal.png" alt="Logo derecho">
     </header>
-
+    
     <div class="container">
         <h2>Selecciona el servicio de emergencia a llamar:</h2>
         <div style="max-width: 375px; padding: 5px;">
@@ -100,7 +127,7 @@
             <a href="tel:115" class="phone-number">Codensa</a>
             <a href="tel:018000112137" class="phone-number">Linea Púrpura</a>
         </div>
-        
+
         <div style="margin-left: 400px; margin-top: -520px;">
             <a href="tel:018000112137" class="phone-number">Linea Psicoactiva o Linea SPA</a>
             <a href="tel:147" class="phone-number">Gaula Ejército</a>
@@ -113,7 +140,8 @@
 
         <!-- Botón para descargar el archivo .vcf -->
         <a href="contactos_emergencia.vcf" download="contactos_emergencia.vcf">
-            <button style="padding: 10px 20px; font-size: 1.2em; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            <button
+                style="padding: 10px 20px; font-size: 1.2em; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
                 Descargar Contactos de Emergencia
             </button>
         </a>
@@ -124,4 +152,5 @@
         <p>Abogada Alexandra PLLC © 2025 Todos los derechos reservados.</p>
     </footer>
 </body>
+
 </html>
