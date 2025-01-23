@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link rel="icon" href="./quetzal.png" type="image/x-icon">
     <title>Lineas de Emergencia</title>
     <style>
@@ -29,7 +30,7 @@
             color: #fffbf4;
             text-align: center;
             padding: 20px 0;
-            max-height: 160px;
+            height: 180px;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -41,10 +42,9 @@
 
         /* Ajustes para las imágenes */
         .header-image {
-            max-width: 160px;
+            max-width: 170px;
             height: auto;
-            margin-top: -30px;
-            margin-bottom: -40px;
+            margin-top: auto;
         }
 
         /* Título del encabezado */
@@ -52,6 +52,8 @@
             flex: 1;
             margin: 0;
             font-size: 2em;
+            padding-top: 60px;
+            padding-bottom: -110px;
         }
 
         /* Estilo para los números de contacto */
@@ -166,6 +168,15 @@
                 padding: 10px 15px;
             }
         }
+
+        #qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border: 1px solid red; /* Borde rojo temporal */
+            text-align: center;
+        }        
+        
     </style>
 </head>
 
@@ -202,6 +213,28 @@
         <a href="tel:01800 954 5724" class="phone-number">EAP Latina</a>
         <a href="tel:018000112137" class="phone-number">Fiscalia General de la Nación</a>
     </div>
+
+    <h1>Escanea este código QR para acceder a la página</h1>
+
+    <!-- Contenedor para el código QR -->
+    <div id="qrcode">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var url = 'https://julianrodriguezar.github.io/Colombian-Emergency-Phone-Numbers/';  // Obtiene la URL de la página
+                console.log("URL generada para QR: ", url);  // Muestra la URL en consola
+            
+                QRCode.toCanvas(document.getElementById("qrcode"), url, { width: 300, height: 300 }, function(error) {
+                    if (error) {
+                        console.error("Error generando el QR: ", error);
+                    } else {
+                        console.log("QR generado con éxito");
+                    }
+                });
+            });            
+        </script>
+    </div>
+
+    
 
     <!-- Botón para descargar el archivo .vcf -->
     <a href="contactos_emergencia.vcf" class="floating-btn" download="contactos_emergencia.vcf">
