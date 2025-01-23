@@ -2,6 +2,8 @@ BEGIN:VCARD
 VERSION:3.0
 FN:Contactos de Emergencia
 N:Contactos de Emergencia
+PHOTO;VALUE=URL;TYPE=PNG:https://ibb.co/DKHhBkG
+EMAIL:contacto@example.com
 TEL;TYPE=Linea Única de Emergencia:123
 TEL;TYPE=Policía Nacional:112
 TEL;TYPE=Bomberos:119
@@ -17,4 +19,9 @@ TEL;TYPE=Linea Antiterrorista 2:018000127627
 TEL;TYPE=Policía Ambiental y Ecológica:5159000
 TEL;TYPE=Policía de Tránsito y Transporte:018000112137
 TEL;TYPE=Fiscalia General de la Nación:018000112137
+ADR;TYPE=HOME:;;Ac 116 #21-50, Bogotá, Colombia
+ORG:Quetzal Internation Services SAS
+URL:https://www.empresa.com
+X-SOCIALPROFILE;TYPE=Facebook:https://www.facebook.com/empresa
+X-SOCIALPROFILE;TYPE=Twitter:https://www.twitter.com/empresa
 END:VCARD
