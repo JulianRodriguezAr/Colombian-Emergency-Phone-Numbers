@@ -1,27 +1,30 @@
 BEGIN:VCARD
 VERSION:3.0
 FN:Contactos de Emergencia
-N:Contactos de Emergencia
+N:Contactos de Emergencia Colombianos
 PHOTO;VALUE=URL;TYPE=PNG:https://ibb.co/DKHhBkG
 EMAIL:contacto@example.com
-TEL;TYPE=Linea Única de Emergencia:123
-TEL;TYPE=Policía Nacional:112
 TEL;TYPE=Bomberos:119
+TEL;TYPE=IDIGER:3813000
 TEL;TYPE=Cruz Roja:132
 TEL;TYPE=Defensa Civil:144
-TEL;TYPE=Acueducto:116
-TEL;TYPE=Codensa:115
-TEL;TYPE=Linea Púrpura:018000112137
-TEL;TYPE=Linea Psicoactiva o Linea SPA:018000112137
-TEL;TYPE=Gaula Ejército:147
-TEL;TYPE=Linea Antiterrorista:018000919621
-TEL;TYPE=Linea Antiterrorista 2:018000127627
+TEL;TYPE=Policía Nacional:123 - 2483511 - 2483512
 TEL;TYPE=Policía Ambiental y Ecológica:5159000
 TEL;TYPE=Policía de Tránsito y Transporte:018000112137
+TEL;TYPE=DIJIN:157
+TEL;TYPE=GAULA:165
+TEL;TYPE=Alumbrado eléctrico - Codensa:115
+TEL;TYPE=Gas natural:164
+TEL;TYPE=Acueducto:116
+TEL;TYPE=Linea Púrpura:018000112137
+TEL;TYPE=Secretaría de salud - ambulancia:123
+TEL;TYPE=Allianz:#265
+TEL;TYPE=Sura:4055911
+TEL;TYPE=EAP Latina:01800 954 5724
 TEL;TYPE=Fiscalia General de la Nación:018000112137
 ADR;TYPE=HOME:;;Avenida Calle 116 21-50, Bogotá, Colombia
 ORG:Quetzal Internation Services SAS
 URL:https://www.empresa.com
 X-SOCIALPROFILE;TYPE=Facebook:https://www.facebook.com/empresa
-X-SOCIALPROFILE;TYPE=Twitter:https://www.twitter.com/empresa
+X-SOCIALPROFILE;TYPE=X:https://www.x.com/empresa
 END:VCARD
