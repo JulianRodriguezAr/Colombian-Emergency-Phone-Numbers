@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script src="js/kjua.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
     <link rel="icon" href="./quetzal.png" type="image/x-icon">
     <title>Lineas de Emergencia</title>
     <style>
@@ -65,7 +66,8 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Dos columnas fijas */
+            grid-template-columns: repeat(2, 1fr);
+            /* Dos columnas fijas */
             gap: 20px;
         }
 
@@ -173,17 +175,16 @@
             width: 200px;
             height: 200px;
             margin: 20px auto;
-            border: 1px solid red; /* Borde rojo temporal */
             text-align: center;
-        }        
-        
+            margin-bottom: 150px;
+        }
     </style>
 </head>
 
 <body>
     <header>
         <h1>Servicios de Emergencia Colombianos</h1>
-        <img class="header-image" src="./quetzal.png" alt="Logo derecho">
+        <img class="header-image" src="./quetzal.png" alt="Logo">
     </header>
 
     <div class="container">
@@ -219,22 +220,131 @@
     <!-- Contenedor para el código QR -->
     <div id="qrcode">
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var url = 'https://julianrodriguezar.github.io/Colombian-Emergency-Phone-Numbers/';  // Obtiene la URL de la página
-                console.log("URL generada para QR: ", url);  // Muestra la URL en consola
-            
-                QRCode.toCanvas(document.getElementById("qrcode"), url, { width: 300, height: 300 }, function(error) {
-                    if (error) {
-                        console.error("Error generando el QR: ", error);
-                    } else {
-                        console.log("QR generado con éxito");
-                    }
+            document.addEventListener("DOMContentLoaded", function () {
+                var url = 'https://julianrodriguezar.github.io/Colombian-Emergency-Phone-Numbers/';  // URL actual de la página
+
+                // Generar el QR con kjua.js
+                var qrcode = kjua({
+                    text: url,                // URL a codificar
+                    size: 200,                // Tamaño del QR
+                    render: 'canvas',         // Renderizado en canvas
+                    ecLevel: 'L',             // Nivel de corrección de errores
+                    minVersion: 1,            // Versión del QR (tamaño)
+                    quietZone: 2              // Zona de silencio alrededor del código
                 });
+
+                // Añadir el QR al contenedor
+                document.getElementById('qrcode').appendChild(qrcode);
             });            
         </script>
     </div>
 
-    
+    <!-- Conexión BD con el web site -->
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+        const supabaseUrl = 'https://cxnnlvndfmkynklmobzt.supabase.co'; // URL de Supabase
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN4bm5sdm5kZm1reW5rbG1vYnp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc3NDAzOTMsImV4cCI6MjA1MzMxNjM5M30.6Yt_UsGtnaunycX5Vqzjv70e_7AL1E5NUBQduN82NEc'; // clave pública de la API
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+
+        // Pompt
+
+        // Función para recolectar y guardar datos en Supabase
+        async function collect_and_save_data() {
+            let id_number = prompt("Ingresa tu número de identificación:");
+
+            if (id_number) {
+                // Validar que el valor ingresado sea un número
+                while (isNaN(id_number) || id_number === '') {
+                    alert("Por favor, ingresa solo números.");
+                    id_number = prompt("Ingresa tu número de identificación (solo números):");
+                }
+
+                // Obtener la IP y ubicación del visitante
+                const response = await fetch('https://ipinfo.io/json?token=00c8c7ff641a80');
+                const data = await response.json();
+
+                const { ip, city, region, country } = data;
+                const location = `${city}, ${region}, ${country}`;
+                const ip_address = ip;
+
+                // Guardar los datos en Supabase
+                const { error } = await supabase.from('Users_clients').insert([
+                    {
+                        id_number: id_number,
+                        created_at: new Date().toISOString(),
+                        location: location,
+                        ip_address: ip_address
+                    },
+                ]);
+
+                if (error) {
+                    console.error('Error al guardar los datos en Supabase:', error);
+                } else {
+                    console.log('Datos guardados exitosamente en Supabase');
+                    console.log(data)
+                }
+            }
+        }
+
+        // Función para exportar datos a Google Sheets
+        async function exportDataToSheets() {
+            // Cargar la biblioteca de cliente de Google
+            gapi.load('client:auth2', async () => {
+                await gapi.client.init({
+                    apiKey: 'AIzaSyAWUi1iO4DHrmNQgUy6yHE6zJNCBz-SuWg', // clave API de Google (para inicializar el cliente)
+                    clientId: '413618583549-oejg01f216pu38rcbetf58v5vn6udsgf.apps.googleusercontent.com.apps.googleusercontent.com', // Tu Client ID de OAuth 2.0
+                    scope: 'https://www.googleapis.com/auth/spreadsheets',
+                    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+                });
+
+                // Autenticar al usuario
+                const authInstance = gapi.auth2.getAuthInstance();
+                await authInstance.signIn();
+                console.log('Autenticación exitosa');
+
+                // Obtener los datos de Supabase
+                const { data: supabaseData, error: fetchError } = await supabase
+                    .from('Users_clients')
+                    .select('id_number, created_at, location, ip_address');
+
+                if (fetchError) {
+                    console.error('Error al obtener datos de Supabase:', fetchError);
+                    return;
+                }
+
+                const values = supabaseData.map((item) => [
+                    item.id_number,
+                    item.created_at,
+                    item.location,
+                    item.ip_address,
+                ]);
+
+                // Enviar los datos a Google Sheets
+                const sheetsId = '1R4WpgTscgi20m3ZDFNRHKqdbUjAu0Z31k13qu3vN9YE'; // ID de Sheets
+                const range = 'Visitant_users!A1';
+
+                const request = gapi.client.sheets.spreadsheets.values.append({
+                    spreadsheetId: sheetsId,
+                    range: range,
+                    valueInputOption: 'RAW',
+                    resource: {
+                        values: values,
+                    },
+                });
+
+                request.execute((response) => {
+                    console.log('Datos exportados a Google Sheets:', response);
+                });
+            });
+        }
+
+        // Llamar a las funciones
+        await collect_and_save_data(); // Recolectar y guardar datos en Supabase
+        await exportDataToSheets(); // Exportar datos a Sheets
+    </script>
+
 
     <!-- Botón para descargar el archivo .vcf -->
     <a href="contactos_emergencia.vcf" class="floating-btn" download="contactos_emergencia.vcf">
