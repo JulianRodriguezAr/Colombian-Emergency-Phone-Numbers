@@ -288,56 +288,72 @@
             }
         }
 
-        // Función para exportar datos a Google Sheets
+        // Función para exportar datos a Google Sheets usando Google Identity Services
         async function exportDataToSheets() {
-            // Cargar la biblioteca de cliente de Google
-            gapi.load('client:auth2', async () => {
-                await gapi.client.init({
-                    apiKey: 'AIzaSyAWUi1iO4DHrmNQgUy6yHE6zJNCBz-SuWg', // clave API de Google (para inicializar el cliente)
-                    clientId: '413618583549-oejg01f216pu38rcbetf58v5vn6udsgf.apps.googleusercontent.com', // Tu Client ID de OAuth 2.0
-                    scope: 'https://www.googleapis.com/auth/spreadsheets',
-                    discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-                });
+            // Configurar el token de acceso OAuth 2.0
+            const tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: '413618583549-oejg01f216pu38rcbetf58v5vn6udsgf.apps.googleusercontent.com', // Reemplaza con tu Client ID
+                scope: 'https://www.googleapis.com/auth/spreadsheets',
+                callback: async (response) => {
+                    if (response.error) {
+                        console.error('Error al autenticar:', response);
+                        return;
+                    }
 
-                // Autenticar al usuario
-                const authInstance = gapi.auth2.getAuthInstance();
-                await authInstance.signIn();
-                console.log('Autenticación exitosa');
+                    // Token de acceso obtenido correctamente
+                    const accessToken = response.access_token;
+                    console.log('Token obtenido:', accessToken);
 
-                // Obtener los datos de Supabase
-                const { data: supabaseData, error: fetchError } = await supabase
-                    .from('Users_clients')
-                    .select('id_number, created_at, location, ip_address');
+                    // Obtener datos de Supabase
+                    const { data: supabaseData, error: fetchError } = await supabase
+                        .from('Users_clients')
+                        .select('id_number, created_at, location, ip_address');
 
-                if (fetchError) {
-                    console.error('Error al obtener datos de Supabase:', fetchError);
-                    return;
-                }
+                    if (fetchError) {
+                        console.error('Error al obtener datos de Supabase:', fetchError);
+                        return;
+                    }
 
-                const values = supabaseData.map((item) => [
-                    item.id_number,
-                    item.created_at,
-                    item.location,
-                    item.ip_address,
-                ]);
+                    const values = supabaseData.map((item) => [
+                        item.id_number,
+                        item.created_at,
+                        item.location,
+                        item.ip_address,
+                    ]);
 
-                // Enviar los datos a Google Sheets
-                const sheetsId = '1R4WpgTscgi20m3ZDFNRHKqdbUjAu0Z31k13qu3vN9YE'; // ID de Sheets
-                const range = 'Visitant_users!A1';
+                    // Configurar la solicitud para Google Sheets
+                    const sheetsId = '1R4WpgTscgi20m3ZDFNRHKqdbUjAu0Z31k13qu3vN9YE'; // ID del Google Sheet
+                    const range = 'Visitant_users!A1';
 
-                const request = gapi.client.sheets.spreadsheets.values.append({
-                    spreadsheetId: sheetsId,
-                    range: range,
-                    valueInputOption: 'RAW',
-                    resource: {
+                    const body = {
+                        range: range,
+                        majorDimension: 'ROWS',
                         values: values,
-                    },
-                });
+                    };
 
-                request.execute((response) => {
-                    console.log('Datos exportados a Google Sheets:', response);
-                });
+                    const sheetsResponse = await fetch(
+                        `https://sheets.googleapis.com/v4/spreadsheets/${sheetsId}/values/${range}:append?valueInputOption=RAW`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                Authorization: `Bearer ${accessToken}`,
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(body),
+                        }
+                    );
+
+                    if (sheetsResponse.ok) {
+                        console.log('Datos exportados a Google Sheets');
+                    } else {
+                        const errorDetails = await sheetsResponse.json();
+                        console.error('Error al exportar los datos a Google Sheets:', errorDetails);
+                    }
+                },
             });
+
+            // Iniciar el flujo de autenticación
+            tokenClient.requestAccessToken();
         }
 
         // Llamar a las funciones
