@@ -290,71 +290,50 @@
 
         // Función para exportar datos a Google Sheets usando Google Identity Services
         async function exportDataToSheets() {
-            // Configurar el token de acceso OAuth 2.0
-            const tokenClient = google.accounts.oauth2.initTokenClient({
-                client_id: '413618583549-oejg01f216pu38rcbetf58v5vn6udsgf.apps.googleusercontent.com', // Reemplaza con tu Client ID
-                scope: 'https://www.googleapis.com/auth/spreadsheets',
-                callback: async (response) => {
-                    if (response.error) {
-                        console.error('Error al autenticar:', response);
-                        return;
-                    }
+            // Carga las credenciales de la cuenta de servicio
+            const credentials = await fetch('./service-account.json').then((response) =>
+                response.json()
+            );
 
-                    // Token de acceso obtenido correctamente
-                    const accessToken = response.access_token;
-                    console.log('Token obtenido:', accessToken);
+            // Configurar la autenticación
+            const auth = new google.auth.JWT(
+                credentials.client_email, // Email de la cuenta de servicio
+                null,
+                credentials.private_key, // Clave privada
+                ['https://www.googleapis.com/auth/spreadsheets'] // Ámbito de acceso
+            );
 
-                    // Obtener datos de Supabase
-                    const { data: supabaseData, error: fetchError } = await supabase
-                        .from('Users_clients')
-                        .select('id_number, created_at, location, ip_address');
+            // Autorizar la solicitud
+            await auth.authorize();
 
-                    if (fetchError) {
-                        console.error('Error al obtener datos de Supabase:', fetchError);
-                        return;
-                    }
+            // Configurar el cliente de Google Sheets
+            const sheets = google.sheets({ version: 'v4', auth });
 
-                    const values = supabaseData.map((item) => [
-                        item.id_number,
-                        item.created_at,
-                        item.location,
-                        item.ip_address,
-                    ]);
 
-                    // Configurar la solicitud para Google Sheets
-                    const sheetsId = '1R4WpgTscgi20m3ZDFNRHKqdbUjAu0Z31k13qu3vN9YE'; // ID del Google Sheet
-                    const range = 'Visitant_users!A1';
-
-                    const body = {
-                        range: range,
-                        majorDimension: 'ROWS',
-                        values: values,
-                    };
-
-                    const sheetsResponse = await fetch(
-                        `https://sheets.googleapis.com/v4/spreadsheets/${sheetsId}/values/${range}:append?valueInputOption=RAW`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                Authorization: `Bearer ${accessToken}`,
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(body),
-                        }
-                    );
-
-                    if (sheetsResponse.ok) {
-                        console.log('Datos exportados a Google Sheets');
-                    } else {
-                        const errorDetails = await sheetsResponse.json();
-                        console.error('Error al exportar los datos a Google Sheets:', errorDetails);
-                    }
+            // Enviar los datos a Google Sheets
+            const request = {
+                spreadsheetId: '1R4WpgTscgi20m3ZDFNRHKqdbUjAu0Z31k13qu3vN9YE', // Reemplaza con el ID de tu Google Sheet
+                range: 'Visitant_users!A1', // Rango donde se guardarán los datos
+                valueInputOption: 'RAW',
+                resource: {
+                    values: data,
                 },
-            });
+            };
 
-            // Iniciar el flujo de autenticación
-            tokenClient.requestAccessToken();
+            try {
+                const response = await sheets.spreadsheets.values.append(request);
+                console.log('Datos exportados a Google Sheets:', response.data);
+            } catch (err) {
+                console.error('Error al exportar los datos:', err);
+            }
         }
+
+        // Datos de ejemplo para exportar
+        const supabaseData = [
+            ['ID', 'Fecha', 'Ubicación', 'IP'],
+            ['123456', '2025-01-25', 'Bogotá, Colombia', '192.168.0.1'],
+        ];
+
 
         // Llamar a las funciones
         await collect_and_save_data(); // Recolectar y guardar datos en Supabase
