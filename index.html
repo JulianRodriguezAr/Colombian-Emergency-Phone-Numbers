@@ -290,7 +290,7 @@
 
         // Función para exportar datos a Google Sheets usando Google Identity Services
         // URL del Apps Script
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbyILzy7THwAMdUnsTXLYyCtPwtvCome6KKVVu4xMGqxvKiVtIDXuHYK1api8R_yLHQ/exec'; // Reemplaza con la URL del Apps Script
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycby5KfD_LmO1atbj4jph2cJ0hN38I7fIER9E1HOd-Vmv94PhSws7OVdguFVgJlw6Du3v/exec'; // Reemplaza con la URL del Apps Script
 
         // Función para obtener y formatear datos de Supabase
         async function fetchAndExportData() {
@@ -313,7 +313,7 @@
                     item.ip_address,
                 ]);
 
-                console.log('Datos formateados:', formattedData);
+                console.log('Datos formateados:');
 
                 // Enviar los datos al Apps Script
                 const response = await fetch(scriptUrl, {
