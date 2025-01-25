@@ -289,55 +289,57 @@
         }
 
         // Función para exportar datos a Google Sheets usando Google Identity Services
-        async function exportDataToSheets() {
-            // Carga las credenciales de la cuenta de servicio
-            const credentials = await fetch('./service-account.json').then((response) =>
-                response.json()
-            );
+        // URL del Apps Script
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbyILzy7THwAMdUnsTXLYyCtPwtvCome6KKVVu4xMGqxvKiVtIDXuHYK1api8R_yLHQ/exec'; // Reemplaza con la URL del Apps Script
 
-            // Configurar la autenticación
-            const auth = new google.auth.JWT(
-                credentials.client_email, // Email de la cuenta de servicio
-                null,
-                credentials.private_key, // Clave privada
-                ['https://www.googleapis.com/auth/spreadsheets'] // Ámbito de acceso
-            );
-
-            // Autorizar la solicitud
-            await auth.authorize();
-
-            // Configurar el cliente de Google Sheets
-            const sheets = google.sheets({ version: 'v4', auth });
-
-
-            // Enviar los datos a Google Sheets
-            const request = {
-                spreadsheetId: '1R4WpgTscgi20m3ZDFNRHKqdbUjAu0Z31k13qu3vN9YE', // Reemplaza con el ID de tu Google Sheet
-                range: 'Visitant_users!A1', // Rango donde se guardarán los datos
-                valueInputOption: 'RAW',
-                resource: {
-                    values: data,
-                },
-            };
-
+        // Función para obtener y formatear datos de Supabase
+        async function fetchAndExportData() {
             try {
-                const response = await sheets.spreadsheets.values.append(request);
-                console.log('Datos exportados a Google Sheets:', response.data);
-            } catch (err) {
-                console.error('Error al exportar los datos:', err);
+                // Obtener los datos de Supabase
+                const { data, error } = await supabase
+                    .from('Users_clients')
+                    .select('id_number, created_at, location, ip_address');
+
+                if (error) {
+                    console.error('Error al obtener datos de Supabase:', error);
+                    return;
+                }
+
+                // Formatear los datos en filas para Google Sheets
+                const formattedData = data.map((item) => [
+                    item.id_number,
+                    new Date(item.created_at).toLocaleString(), // Formato legible de fecha y hora
+                    item.location,
+                    item.ip_address,
+                ]);
+
+                console.log('Datos formateados:', formattedData);
+
+                // Enviar los datos al Apps Script
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formattedData),
+                });
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    console.log('Exportación exitosa:', result.message);
+                } else {
+                    console.error('Error al exportar:', result.message);
+                }
+            } catch (error) {
+                console.error('Error en el proceso:', error);
             }
         }
 
-        // Datos de ejemplo para exportar
-        const supabaseData = [
-            ['ID', 'Fecha', 'Ubicación', 'IP'],
-            ['123456', '2025-01-25', 'Bogotá, Colombia', '192.168.0.1'],
-        ];
+        // Llama a la función al cargar la página o en un evento específico
+        
 
 
         // Llamar a las funciones
         await collect_and_save_data(); // Recolectar y guardar datos en Supabase
-        await exportDataToSheets(); // Exportar datos a Sheets
+        await fetchAndExportData(); // Exportar datos a Sheets
     </script>
 
 
