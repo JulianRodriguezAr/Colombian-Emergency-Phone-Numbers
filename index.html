@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="./kjua.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <link rel="icon" href="./quetzal.png" type="image/x-icon">
+    <!-- <link rel="icon" href="./quetzal.png" type="image/x-icon"> -->
     <title>Lineas de Emergencia</title>
     <style>
         /* Estilos generales */
@@ -176,7 +176,7 @@
             height: 200px;
             margin: 20px auto;
             text-align: center;
-            margin-bottom: 150px;
+            margin-bottom: 90px;
         }
     </style>
 </head>
@@ -184,7 +184,7 @@
 <body>
     <header>
         <h1>Servicios de Emergencia Colombianos</h1>
-        <img class="header-image" src="./quetzal.png" alt="Logo">
+        <!-- <img class="header-image" src="./quetzal.png" alt="Logo"> -->
     </header>
 
     <div class="container">
@@ -197,7 +197,7 @@
         <a href="tel:119" class="phone-number">Bomberos</a>
         <a href="tel:3813000" class="phone-number">IDIGER</a>
         <a href="tel:132" class="phone-number">Cruz Roja</a>
-        <a href="tel:144" class="phone-number">Defensa Civil:</a>
+        <a href="tel:144" class="phone-number">Defensa Civil</a>
         <a href="tel:123 - 2483511 - 2483512" class="phone-number">Policía Nacional</a>
         <a href="tel:5159000" class="phone-number">Policía Ambiental y Ecológica</a>
         <a href="tel:018000112137" class="phone-number">Policía de Tránsito y Transporte</a>
@@ -215,7 +215,7 @@
         <a href="tel:018000112137" class="phone-number">Fiscalia General de la Nación</a>
     </div>
 
-    <h1>Escanea este código QR para acceder a la página</h1>
+    <h2 style="flex: 1; padding-top: 30px; padding-bottom: 20px; text-align:center; ">Escanea este código QR para acceder a la página</h2>
 
     <!-- Contenedor para el código QR -->
     <div id="qrcode">
@@ -290,7 +290,7 @@
 
         // Función para exportar datos a Google Sheets usando Google Identity Services
         // URL del Apps Script
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycby5KfD_LmO1atbj4jph2cJ0hN38I7fIER9E1HOd-Vmv94PhSws7OVdguFVgJlw6Du3v/exec'; // Reemplaza con la URL del Apps Script
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbyt3G7NKZNIhheexbxiMdxaw0Mq5sOyWYDE1nGtf5I5XNNcJy-V8CfBfiH0yplydJL4Cg/exec'; // Reemplaza con la URL del Apps Script
 
         // Función para obtener y formatear datos de Supabase
         async function fetchAndExportData() {
@@ -313,12 +313,13 @@
                     item.ip_address,
                 ]);
 
-                console.log('Datos formateados:');
+                console.log('Datos formateados:', formattedData);
 
                 // Enviar los datos al Apps Script
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
+                    mode: 'no-cors', // 🔹 Permite evitar bloqueos CORS (pero oculta la respuesta)
                     body: JSON.stringify(formattedData),
                 });
 
@@ -332,10 +333,6 @@
                 console.error('Error en el proceso:', error);
             }
         }
-
-        // Llama a la función al cargar la página o en un evento específico
-        
-
 
         // Llamar a las funciones
         await collect_and_save_data(); // Recolectar y guardar datos en Supabase
